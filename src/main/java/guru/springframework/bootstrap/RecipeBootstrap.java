@@ -16,6 +16,10 @@ import java.util.Optional;
 /**
  * Created by jt on 6/13/17.
  */
+// Make this a bootstrap class, 
+// add @Component  
+// tap into application events: 
+// implements ApplicationListener<ContextRefreshedEvent>
 @Component
 public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEvent> {
 
@@ -29,15 +33,20 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
         this.unitOfMeasureRepository = unitOfMeasureRepository;
     }
 
+    // IntelliJ>right click>implement methods: implement ApplicationListener interface method:
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
+        // save the list of recipes we created. 
         recipeRepository.saveAll(getRecipes());
     }
 
+    // returns a list of recipes - we want to return this on startup
     private List<Recipe> getRecipes() {
 
+        // ugly code, we are creating seed data
         List<Recipe> recipes = new ArrayList<>(2);
 
+        // we get all the unit of measures, if any are not found we throw an exception + stop the startup
         //get UOMs
         Optional<UnitOfMeasure> eachUomOptional = unitOfMeasureRepository.findByDescription("Each");
 
@@ -83,7 +92,7 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
         UnitOfMeasure pintUom = dashUomOptional.get();
         UnitOfMeasure cupsUom = cupsUomOptional.get();
 
-        //get Categories
+        // get Categories - stop startup if not found
         Optional<Category> americanCategoryOptional = categoryRepository.findByDescription("American");
 
         if(!americanCategoryOptional.isPresent()){
@@ -99,7 +108,7 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
         Category americanCategory = americanCategoryOptional.get();
         Category mexicanCategory = mexicanCategoryOptional.get();
 
-        //Yummy Guac
+        // Yummy Guac - creating recipe
         Recipe guacRecipe = new Recipe();
         guacRecipe.setDescription("Perfect Guacamole");
         guacRecipe.setPrepTime(10);
@@ -127,6 +136,10 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
                 "\n" +
                 "Read more: http://www.simplyrecipes.com/recipes/perfect_guacamole/#ixzz4jvoun5ws");
 
+        // was needed for bidirectional, easy for someone to forget:
+        // guacNotes.setRecipe(guacRecipe);
+        // setNotes is updated to centrally handle this now
+        // when we pass in a Notes object we call notes.setRecipe(this);:
         guacRecipe.setNotes(guacNotes);
 
         //very redundent - could add helper method, and make this simpler
@@ -139,10 +152,15 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
         guacRecipe.addIngredient(new Ingredient("freshly grated black pepper", new BigDecimal(2), dashUom));
         guacRecipe.addIngredient(new Ingredient("ripe tomato, seeds and pulp removed, chopped", new BigDecimal(".5"), eachUom));
 
+        // we initialised the set in class Recipe>private Set<Category> categories = new HashSet<>();,
+        // Nice trick, if you initialize the Set with a default empty Set, then you won't have to create one. 
+        // This is just something from experience. 
+        // If you have a POJO with a List or Set + you add something to it, 
+        // you get a null pointer unless you've initialized it with something first.  
         guacRecipe.getCategories().add(americanCategory);
         guacRecipe.getCategories().add(mexicanCategory);
 
-        //add to return list
+        //add recipe to recipes list
         recipes.add(guacRecipe);
 
         //Yummy Tacos

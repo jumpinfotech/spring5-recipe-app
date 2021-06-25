@@ -6,14 +6,16 @@
 </head>
 <body>
 <h1>My Recipes!</h1>
-
+<!--view @ localhost:8080-->
 <table>
     <tr>
         <th>ID</th>
         <th>Description</th>
     </tr>
+    <!-- iterator going over recipes -->
     <tr th:each="recipe : ${recipes}">
         <td th:text="${recipe.id}">123</td>
+        <!-- Tasty Goodnees for the natural templating-->
         <td th:text="${recipe.description}">Tasty Goodnees</td>
     </tr>
 </table>

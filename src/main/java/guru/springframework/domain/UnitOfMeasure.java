@@ -8,9 +8,11 @@ import javax.persistence.Id;
 /**
  * Created by jt on 6/13/17.
  */
+// UnitOfMeasure entity
 @Entity
 public class UnitOfMeasure {
 
+    // GenerationType.IDENTITY we get the id value from the database
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

@@ -10,9 +10,10 @@ import java.util.Set;
 /**
  * Created by jt on 6/13/17.
  */
-@Service
+@Service // don't forget @Service
 public class RecipeServiceImpl implements RecipeService {
 
+    // use a final, it's shouldn't change
     private final RecipeRepository recipeRepository;
 
     public RecipeServiceImpl(RecipeRepository recipeRepository) {
@@ -22,6 +23,7 @@ public class RecipeServiceImpl implements RecipeService {
     @Override
     public Set<Recipe> getRecipes() {
         Set<Recipe> recipeSet = new HashSet<>();
+        // convert the iterable to a HashSet, returning a Set
         recipeRepository.findAll().iterator().forEachRemaining(recipeSet::add);
         return recipeSet;
     }

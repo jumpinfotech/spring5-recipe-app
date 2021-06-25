@@ -1,3 +1,4 @@
+//  using package domain, some like a separate package for enums 
 package guru.springframework.domain;
 
 /**

@@ -12,10 +12,16 @@ public class Notes {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // notes has a 1 to 1 relationship with recipe
     @OneToOne
+    // We don't specify a cascade as recipe owns this.
+    // We have no cascade operation therefore deleting the notes object won't delete the recipe object.
     private Recipe recipe;
 
     @Lob
+    // clob = character large object
+    // String for hibernate + JPA is 255 characters, we want more on the notes field.
+    // @Lob - against a String, JPA expects to store it in a Clob field in the db.
     private String recipeNotes;
 
     public Long getId() {

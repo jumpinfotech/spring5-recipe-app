@@ -15,12 +15,17 @@ public class Ingredient {
     private String description;
     private BigDecimal amount;
 
+    // FetchType.EAGER is default (written here to help read the code) - this is retrieved every time from the database.
     @OneToOne(fetch = FetchType.EAGER)
     private UnitOfMeasure uom;
 
-    @ManyToOne
+    // no cascade as when we delete an ingredient 
+    // we don't want that to cascade up + delete a recipe
+    // ingredient has 1 recipe
+    @ManyToOne 
     private Recipe recipe;
 
+    // added constructors
     public Ingredient() {
     }
 
@@ -34,6 +39,7 @@ public class Ingredient {
         this.description = description;
         this.amount = amount;
         this.uom = uom;
+        // in table INGREDIENT>column RECIPE_ID we had null, this line fixes it (RecipeBootstrap slightly adjusted to accommodate this):-
         this.recipe = recipe;
     }
 

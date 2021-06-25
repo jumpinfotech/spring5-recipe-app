@@ -14,6 +14,9 @@ public class Category {
     private Long id;
     private String description;
 
+    // ManyToMany - between Recipe + Category:- bidirectional, this will be mapped on the join table
+    // from the other side of the relationship.
+    // mappedBy - Recipe.java has private Set<Category> categories = new HashSet<>();
     @ManyToMany(mappedBy = "categories")
     private Set<Recipe> recipes;
 

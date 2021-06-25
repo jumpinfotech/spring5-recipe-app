@@ -11,15 +11,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class IndexController {
 
+    // injecting a service
     private final RecipeService recipeService;
 
     public IndexController(RecipeService recipeService) {
         this.recipeService = recipeService;
     }
 
+    // pass in the Model
     @RequestMapping({"", "/", "/index"})
     public String getIndexPage(Model model) {
 
+        // pass back the Set<Recipe> to thymeleaf, assigning it to the view model's "recipes" property
         model.addAttribute("recipes", recipeService.getRecipes());
 
         return "index";

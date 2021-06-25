@@ -1,3 +1,4 @@
+// surprise, surprise - repositories go in the repositories package
 package guru.springframework.repositories;
 
 import guru.springframework.domain.Recipe;
